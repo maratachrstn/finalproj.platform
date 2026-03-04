@@ -1,0 +1,203 @@
+:root {
+  --bg: #eef1ec;
+  --text: #0f1722;
+  --muted: #546072;
+  --card: #ffffff;
+  --border: #d6dde6;
+  --primary: #1e6b5d;
+  --shadow: 0 16px 36px rgba(16, 19, 25, 0.14);
+}
+
+[data-theme="dark"] {
+  --bg: #0f141c;
+  --text: #e8eef6;
+  --muted: #9caec2;
+  --card: #121d28;
+  --border: #304253;
+  --primary: #2e9b86;
+  --shadow: 0 16px 36px rgba(5, 10, 14, 0.5);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Space Grotesk", sans-serif;
+  color: var(--text);
+  background: radial-gradient(circle at 10% 10%, #fcf9f2 0%, transparent 36%),
+    radial-gradient(circle at 86% 18%, #def3ec 0%, transparent 42%),
+    var(--bg);
+}
+
+.topbar {
+  max-width: 1100px;
+  margin: 18px auto 0;
+  padding: 12px 18px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand { font-weight: 700; }
+
+.topbar-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.nav-link,
+.logout-btn {
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 8px 12px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.icon-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.icon-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.attendance-shell {
+  max-width: 1100px;
+  margin: 18px auto 32px;
+  padding: 0 8px;
+  display: grid;
+  gap: 14px;
+}
+
+.attendance-form-card,
+.summary-card,
+.records-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+
+.muted {
+  margin: 0 0 8px;
+  color: var(--muted);
+}
+
+.attendance-form {
+  display: grid;
+  gap: 10px;
+}
+
+.attendance-form label {
+  display: grid;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+
+input, select {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 11px;
+  font: inherit;
+  background: var(--card);
+  color: var(--text);
+}
+
+.attendance-form button {
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 13px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary) 0%, #2f8b79 100%);
+  cursor: pointer;
+}
+
+.form-msg {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  min-height: 1.2rem;
+}
+
+.summary-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.summary-item {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.label {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.value {
+  margin: 6px 0 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.records-list {
+  display: grid;
+  gap: 8px;
+}
+
+.record-item {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.record-item h3 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+}
+
+.record-meta {
+  margin: 4px 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.status-badge {
+  display: inline-block;
+  margin-top: 6px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  padding: 4px 8px;
+  font-size: 0.74rem;
+  text-transform: capitalize;
+}
+
+@media (max-width: 860px) {
+  .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
