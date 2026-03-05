@@ -119,6 +119,12 @@ body {
   gap: 10px;
 }
 
+.chat-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .chat-head h1 {
   margin: 0;
   font-size: clamp(1.2rem, 3vw, 1.5rem);
@@ -223,6 +229,23 @@ body {
   cursor: pointer;
   color: #fff;
   background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+}
+
+#voiceBtn {
+  color: var(--text);
+  border: 1px solid var(--border);
+  background: var(--card-strong);
+}
+
+#voiceBtn.is-listening {
+  border-color: #ff8ea0;
+  box-shadow: 0 0 0 2px rgba(255, 142, 160, 0.25);
+}
+
+.voice-state {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
 }
 
 @keyframes pulse {

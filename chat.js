@@ -6,12 +6,17 @@ const userBadge = document.getElementById('userBadge');
 const chatMessages = document.getElementById('chatMessages');
 const chatForm = document.getElementById('chatForm');
 const chatText = document.getElementById('chatText');
+const voiceBtn = document.getElementById('voiceBtn');
+const voiceState = document.getElementById('voiceState');
 const sendBtn = document.getElementById('sendBtn');
 const clearChatBtn = document.getElementById('clearChatBtn');
 const typingState = document.getElementById('typingState');
 const quickButtons = document.querySelectorAll('.quick-btn');
 let historyPoll = null;
 let lastHistorySignature = '';
+let recognition = null;
+let isListening = false;
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
 function getPreferredTheme() {
   const saved = localStorage.getItem(THEME_KEY);
@@ -104,6 +109,87 @@ function startHistoryPolling() {
   }, 4000);
 }
 
+function setVoiceState(message, isError = false) {
+  if (!voiceState) return;
+  if (!message) {
+    voiceState.textContent = '';
+    voiceState.classList.add('hidden');
+    voiceState.style.color = '';
+    return;
+  }
+  voiceState.textContent = message;
+  voiceState.classList.remove('hidden');
+  voiceState.style.color = isError ? '#ff9db0' : '';
+}
+
+function setVoiceButtonState(listening) {
+  if (!voiceBtn) return;
+  voiceBtn.textContent = listening ? 'Stop' : 'Voice';
+  voiceBtn.classList.toggle('is-listening', listening);
+  voiceBtn.setAttribute('aria-label', listening ? 'Stop voice input' : 'Start voice input');
+}
+
+function initSpeechRecognition() {
+  if (!voiceBtn) return;
+  if (!SpeechRecognition) {
+    voiceBtn.disabled = true;
+    voiceBtn.title = 'Voice input is not supported in this browser';
+    return;
+  }
+
+  recognition = new SpeechRecognition();
+  recognition.lang = 'en-US';
+  recognition.interimResults = true;
+  recognition.continuous = false;
+
+  recognition.onstart = () => {
+    isListening = true;
+    setVoiceButtonState(true);
+    setVoiceState('Listening...');
+  };
+
+  recognition.onresult = (event) => {
+    let transcript = '';
+    for (let i = event.resultIndex; i < event.results.length; i += 1) {
+      transcript += event.results[i][0].transcript;
+    }
+    chatText.value = transcript.trim();
+    if (chatText.value) setVoiceState('Voice captured. Edit if needed, then send.');
+  };
+
+  recognition.onerror = (event) => {
+    const errCode = String(event.error || 'unknown');
+    if (errCode === 'not-allowed') {
+      setVoiceState('Microphone permission was denied.', true);
+    } else {
+      setVoiceState(`Voice input error: ${errCode}`, true);
+    }
+  };
+
+  recognition.onend = () => {
+    isListening = false;
+    setVoiceButtonState(false);
+    if (!chatText.value.trim()) {
+      setVoiceState('');
+      return;
+    }
+    chatText.focus();
+  };
+
+  voiceBtn.addEventListener('click', () => {
+    if (!recognition) {
+      setVoiceState('Voice input is not supported in this browser.', true);
+      return;
+    }
+    if (isListening) {
+      recognition.stop();
+      return;
+    }
+    setVoiceState('');
+    recognition.start();
+  });
+}
+
 applyTheme(getPreferredTheme());
 
 themeToggle.addEventListener('click', () => {
@@ -172,6 +258,7 @@ quickButtons.forEach((btn) => {
 });
 
 (async () => {
+  initSpeechRecognition();
   const currentUser = await getCurrentUser();
   try {
     await syncHistory(true);

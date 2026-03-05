@@ -29,7 +29,10 @@
       <div class="chat-head">
         <div class="chat-head-row">
           <h1>AI NLP Support Assistant</h1>
-          <button id="clearChatBtn" class="clear-btn" type="button">Clear chat</button>
+          <div class="chat-head-actions">
+            <button id="voiceBtn" class="clear-btn" type="button" title="Voice to text" aria-label="Start voice input">Voice</button>
+            <button id="clearChatBtn" class="clear-btn" type="button">Clear chat</button>
+          </div>
         </div>
         <p id="userBadge">Signed in</p>
         <p class="live-state"><span class="live-dot"></span>Live conversation active</p>
@@ -48,6 +51,7 @@
         <input id="chatText" type="text" placeholder="Type your question..." required />
         <button id="sendBtn" type="submit">Send</button>
       </form>
+      <p id="voiceState" class="voice-state hidden"></p>
     </section>
   </main>
 
